@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auksjonsside</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .auction-card {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .auction-card img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .timer {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+        .form-section {
+            margin: 20px 0;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 90%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Auksjonsside for Samlekort</h1>
+
+<div class="auction-card">
+    <img src="kort-bilde-url" alt="Samlekort">
+    <h3>Samlekort Tittel</h3>
+    <p>Beskrivelse av samlekortet.</p>
+    <p><strong>Minstepris: NOK 100,-</strong></p>
+    <div class="timer" id="countdown">00:00:00</div>
+</div>
+
+<div class="form-section">
+    <h3>Legg inn ditt bud</h3>
+    <form action="submit_bid.php" method="POST">
+        <input type="text" name="name" placeholder="Navn" required>
+        <input type="text" name="contact" placeholder="Kontaktinformasjon" required>
+        <input type="text" name="address" placeholder="Adresse" required>
+        <input type="number" name="bid" placeholder="Ditt bud (minst NOK 100)" min="100" required>
+        <button type="submit">Legg inn bud</button>
+    </form>
+</div>
+
+<script>
+// Sett tidspunktet for når auksjonen skal avsluttes
+const auctionEndTime = new Date("Sep 20, 2024 15:00:00").getTime();
+
+// Oppdater nedtelling hvert sekund
+const interval = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = auctionEndTime - now;
+
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = hours + "t " + minutes + "m " + seconds + "s";
+
+    if (distance < 0) {
+        clearInterval(interval);
+        document.getElementById("countdown").innerHTML = "Auksjon er over";
+    }
+}, 1000);
+</script>
+
+</body>
+</html>
